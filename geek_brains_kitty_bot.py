@@ -22,7 +22,7 @@ try:
             bot.register_next_step_handler(mesg, answer)
 
         def answer(message):
-            bot.send_message(message.chat.id, calc(message.text))
+            bot.send_message(message.chat.id, get_weather(message.text))
         asking(message)
 
     @bot.message_handler(commands=['calc'])
