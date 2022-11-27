@@ -3,6 +3,7 @@ import telebot
 from wiki import getwiki
 from calculations import calc
 from weather_api import get_weather
+from db_work import add_book
 bot_token = '5484310907:AAHqaQsFv9'
 
 bot = telebot.TeleBot(bot_token)
@@ -38,7 +39,21 @@ try:
         def answer(message):
             bot.send_message(message.chat.id, calc(message.text))
         asking(message)
+    
+    @bot.message_handler(commands=["library"])
+    def wiki(message):
+        bot.send_message(
+            message.chat.id, 'Напишите имя, фамилию автора, название книги и количество страниц через ","')
 
+        def asking(message):
+            mesg = bot.send_message(message.chat.id, 'Что вносим?')
+            bot.register_next_step_handler(mesg, answer)
+
+        def answer(message):
+            bot.send_message(message.chat.id, add_book(message.text))
+        asking(message)
+    
+    
     @bot.message_handler(commands=["wiki"])
     def wiki(message):
         bot.send_message(
